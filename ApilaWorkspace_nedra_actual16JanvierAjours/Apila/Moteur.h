@@ -1,0 +1,237 @@
+enum state {
+    s_demarrage,//0
+    d_voit_proche_usageCourt_gpsS,
+    d_voit_proche_usageVieux_gpsS,
+    d_voit_moyen_usageCourt_gpsS,
+    d_voit_moyen_usageVieux_gpsS,
+    d_voit_loin_usageCourt_gpsS,//5
+    d_voit_loin_usageVieux_gpsS,
+    d_voit_indef_usageCourt_gpsS,//7
+    d_voit_indef_usageCourt_gpsN,
+    d_voit_def_usageCourt_gpsN,// nouveau
+    d_voit_def_usageVieux_gpsN,//nouveau
+    d_voit_def_usageCourt_gpsS,
+    d_voit_def_usageVieux_gpsS,
+    d_voit_indef_usageVieux_gpsS,//state 13
+    d_voit_indef_usageVieux_gpsN,
+    a_simple,//15
+    a_DansVoitDestC,
+    a_proche_voiture,
+    a_moyen_voiture,
+    a_loin_voiture,
+    a_VoitIncDestC,//20
+    a_VoitIncDestInc,
+    a_DansVoitDestInc,//22
+    a_Less25VoitDestC,
+    a_Less25VoitDestInc,
+    a_Less50VoitDestC,//25
+    a_Less50VoitDestInc,
+    a_More50VoitDestC,
+    a_More50VoitDestInc,
+    a_Less25DestVoitC,
+    a_Less25DestVoitInc,//30
+    a_More25DestVoitC,
+    a_More25DestVoitInc,
+    a_GpsInsVoitCDestC,
+    a_GpsInsVoitCDestInc,
+    a_GpsInsVoitIncDestC,//35
+    a_GpsInsVoitIncDestInc,
+    m_simple,//37
+    m_destC,
+    m_apiwalk,
+    m_proche,//40
+    m_moyen,
+    m_loin,
+    m_apifind_loin,
+    m_apifind_moyen,
+    m_apifind_proche,//45
+    m_procheDest,
+    m_moyenDest,
+    m_loinDest,
+    m_apiwalk_dest_loin,
+    m_apiwalk_dest_moyen,//50
+    m_apiwalk_dest_proche,
+   /* m_apifind_distVoit_loin,
+    m_apifind_distVoit_moyen,
+    m_apifind_distVoit_proche,
+    */
+    r_simple,//55
+    r_destInc,
+    r_destInc_apipark,
+    r_destInc_apiway,
+    r_destInc_apishare,
+    r_destInc_gpsN,//60
+    r_destInc_apipark_gpsN,
+    r_destInc_apiway_gpsN,
+    r_destInc_apishare_gpsN,
+    r_destC_distVoitDest_petite_apiway,
+    r_destC_distVoitDest_petite_apishare,//65
+    r_destC_distVoitDest_petite_apipark,
+    r_destC_distVoitDest_petite_apiway_gpsN,
+    r_destC_distVoitDest_petite_apishare_gpsN,
+    r_destC_distVoitDest_petite_apipark_gpsN,
+    r_destC_distVoitDest_grande_distApishare_loin,//70
+    r_destC_distVoitDest_grande_distApishare_loin_gpsN,
+    r_destC_distVoitDest_grande_distApipark_loin,
+    r_destC_distVoitDest_grande_distApipark_loin_gpsN,
+    r_destC_distVoitDest_grande_simple,
+    r_destC_distVoitDest_grande_simple_gspN,//75
+
+    apifind,//à ajouter dans les states à la fin de l'automate
+    apiway,//à ajouter dans les states à la fin de l'automate
+    apiwalk,//à ajouter dans les states à la fin de l'automate
+    apiguide,//à ajouter dans les states à la fin de l'automate
+    apipark,//à ajouter dans les states à la fin de l'automate
+    STATE
+};
+
+enum event {
+    e_init_usageVieux_gpsN, // La position de la voiture est indéfinie == event 0
+    e_init_usageVieux_gpsS,// La position de la voiture est indéfinie 1
+    e_init_usageCourt_gpsN,// La position de la voiture est indéfinie 2
+    e_init_usageCourt_voit_def_gpsN,//3
+    e_init_usageCourt_voit_loin_gpsS,
+    e_init_usageCourt_voit_proche_gpsS,//5
+    e_init_usageCourt_voit_indef_gpsS,//6
+    e_gps_off,
+    e_gps_on,
+    e_apiguide,
+    e_apiway,
+    e_apipark,
+    e_apiwalk,
+    e_apifind,
+    e_transition_proche_moyen,
+    e_transition_moyen_loin,//15
+    e_transition_proche_loin,
+    e_transition_loin_moyen,
+    e_transition__moyen_proche,//18
+    e_transition_loin_proche,
+    e_arret,//20
+    e_arret_voit,//21
+    e_marche,//22
+    e_marche_loin_voit,//23
+    e_marche_proche_voit,//24
+    e_roule,//25
+    e_apiway_implicite,//26
+    e_timer,//27
+    E_NO_EVENT
+};
+enum action {
+    ac_apiwalk__refuse_dest_non_connue,
+    ac_apiguide_refuse_non_roule,
+    ac_apipark_refuse_non_roule,
+    ac_apiway_refuse_non_roule,
+    ac_apiway_start,
+    ac_apipark_start,//5
+    ac_apifind_start,
+    ac_apifind_refuse_voiture_loin,
+    ac_apifind_refuse_voiture_indef,
+    ac_timer_not_active,//9
+    ac_timer_start,
+    ac_NOt_POSSIBLE,
+    ac_arrret_simple,
+    ac_arret_en_voiture,
+    ac_marche,
+    ac_marche_loin_voiture,//15
+    ac_marche_proche_voiture,
+    ac_marche_moyen_voiture,
+    ac_roule_simple,//18
+    ac_gps_off,
+    ac_gps_on,
+    ac_not_possible_no_gps,
+    ac_apiguide_start,
+    ac_apiguide_refuse_voiture_loin,
+    ac_transition_proche_moyen,
+    ac_transition_moyen_loin,
+    ac_transition_proche_loin,
+    ac_transition_loin_moyen,
+    ac_transition__moyen_proche,
+    ac_transition_loin_proche,
+    ac_init,
+    ac_apiway_dest_indef,
+    ac_apifind_refuse_dans_voiture,
+    ac_apiway_refuse_dest_indef,
+    ac_apiwalk_start,
+    ac_apiguide_refuse_voiture_indef,
+    ac_arret_en_voiture_destC,
+    ac_arret_en_voiture_destInc,
+    ac_apiguide_refuse_dest_indef,
+    ac_apifind_refuse_proche_dest,
+    ac_marche_loin_dest,
+    ac_marche_proche_dest,
+    ac_arret_Less25VoitDestC,
+    ac_arret_Less25VoitDestInc,
+    ac_arret_Less50VoitDestC,
+    ac_arret_Less50VoitDestInc,
+    ac_arret_More50VoitDestC,
+    ac_arret_More50VoitDestInc,
+    ac_arret_Less25DestVoitC,
+    ac_arret_Less25DestVoitInc,
+    ac_arret_More25DestVoitC,
+    ac_arret_More25DestVoitInc,
+    ac_arret_proche_voiture,
+    ac_arret_moyen_voiture,
+    ac_arret_loin_voiture,
+    ac_apifind_is_running,
+    ac_marche_apifind,
+    ac_marche_apifind_loin_voiture,
+    ac_marche_apifind_proche_voiture,
+    ac_arret_proche_dest,
+    ac_arret_moyen_dest,
+    ac_arret_loin_dest,
+    ac_apiwalk_refuse_entrain_rouler,
+    ac_transition_impossible_roule,
+    ac_marche_apres_roule,
+    ac_arret_en_voiture_apres_roule,
+    ac_apipark_refuse_is_running,
+    ac_arret_en_voiture_apipark,
+    ac_marche_apres_apipark,
+    ac_apiway_refuse_is_running,
+    ac_arret_en_voiture_apiway,
+    ac_apiguide_start_apishare,
+    ac_apiway_start_apishare,
+    ac_arret_en_voiture_apishare,
+    ac_apipark_start_apishare,
+    ac_apiwalk_refuse_dest_loin,
+    ac_roule_simple_apres_marcher,
+    ac_roule_simple_apres_marcher_apifind,
+    ac_roule_simple_apres_marcher_apiwalk,
+    ac_timer_not_active_not_active_restart,
+    ac_marche_apres_arret_voiture,
+    ac_arret_apifind,
+    ac_arret_en_voiture_apres_apifind,
+    ac_marche_apiway,
+    ac_roule_simple_apres_marcher_apiway,
+    ac_arret_en_voiture_apres_apiwalk,
+    ac_marche_apiwalk,
+    ac_roule_simple_apres_apiwalk,
+    ac_arret_apiway,
+    ac_arret_en_voiture_apres_apiway,
+    ac_arret_apiwalk,
+    ac_apiguide_is_running,
+    ac_arret_apiguide,
+    ac_arret_en_voiture_apiguide,
+    ac_marche_apres_apiguide,
+    ac_roule_simple_apres_apiguide,
+    ac_arret_apipark,
+    ac_roule_simple_apres_apipark,
+    ac_arret_apres_roule,
+    ac_arret_simple,
+    ac_marche_simple,
+    ac_roule_simple_apres_arret,
+    ac_stabilite,
+    ac_Usage_Court,
+    ac_Usage_Vieux,
+    ac_speed_non_stable,
+    ac_non_stabilite,
+    ac_roule_lent,
+    ac_roule_apres_demarrage,
+    NOTHING,
+    A_DONE,
+    NO_ACTION
+};
+
+extern void init_motor(enum state initial);
+extern enum state next_motor( enum event new_event);
+extern enum action todo_motor();
+
